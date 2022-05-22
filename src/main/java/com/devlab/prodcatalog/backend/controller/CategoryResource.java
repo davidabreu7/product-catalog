@@ -4,6 +4,7 @@ import com.devlab.prodcatalog.backend.dto.CategoryDto;
 import com.devlab.prodcatalog.backend.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,4 +24,9 @@ public class CategoryResource {
         return ResponseEntity.ok(categoryService.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDto> findById(@PathVariable Long id) {
+        CategoryDto category = categoryService.findById(id);
+        return ResponseEntity.ok(category);
+    }
 }
