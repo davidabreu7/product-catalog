@@ -1,10 +1,11 @@
 package com.devlab.prodcatalog.backend.service;
 
-import com.devlab.prodcatalog.backend.entities.Category;
+import com.devlab.prodcatalog.backend.dto.CategoryDto;
 import com.devlab.prodcatalog.backend.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -15,8 +16,8 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> findAll() {
+        return categoryRepository.findAll().stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 
 }

@@ -1,6 +1,6 @@
 package com.devlab.prodcatalog.backend.controller;
 
-import com.devlab.prodcatalog.backend.entities.Category;
+import com.devlab.prodcatalog.backend.dto.CategoryDto;
 import com.devlab.prodcatalog.backend.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +18,8 @@ public class CategoryResource {
         this.categoryService = categoryService;
     }
 
-
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
+    public ResponseEntity<List<CategoryDto>> findAll() {
         return ResponseEntity.ok(categoryService.findAll());
     }
 
