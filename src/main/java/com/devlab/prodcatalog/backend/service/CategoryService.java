@@ -5,6 +5,7 @@ import com.devlab.prodcatalog.backend.entities.Category;
 import com.devlab.prodcatalog.backend.exceptions.ResourceNotFoundException;
 import com.devlab.prodcatalog.backend.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +20,21 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<CategoryDto> findAll() {
         return categoryRepository.findAll().stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public CategoryDto findById(Long Id) {
         Optional<Category> category = categoryRepository.findById(Id);
         return category.map(CategoryDto::new).
                 orElseThrow(() -> new ResourceNotFoundException(String.format("Resource Id %d not found", Id)));
     }
 
+    @Transactional
+    public CategoryDto insert(CategoryDto dto) {
+        Category category = new Category(dto);
+        return new CategoryDto(categoryRepository.save(category));
+    }
 }

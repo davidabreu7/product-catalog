@@ -1,5 +1,7 @@
 package com.devlab.prodcatalog.backend.entities;
 
+import com.devlab.prodcatalog.backend.dto.CategoryDto;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,10 @@ public class Category {
     private String name;
 
     public Category() {
+    }
+
+    public Category(CategoryDto dto) {
+        this.name = dto.getName();
     }
 
     public Category(String name) {
