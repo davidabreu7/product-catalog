@@ -2,6 +2,7 @@ package com.devlab.prodcatalog.backend.controller;
 
 import com.devlab.prodcatalog.backend.dto.CategoryDto;
 import com.devlab.prodcatalog.backend.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,6 +40,20 @@ public class CategoryResource {
                 buildAndExpand(dto.getId()).
                 toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto dto, @PathVariable Long id) {
+
+        CategoryDto categoryDto = categoryService.update(id, dto);
+        return ResponseEntity.ok(categoryDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        categoryService.delete(id);
+        return ResponseEntity.status(HttpStatus.GONE).build();
     }
 
 }

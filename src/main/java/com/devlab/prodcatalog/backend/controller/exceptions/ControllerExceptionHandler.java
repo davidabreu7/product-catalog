@@ -1,5 +1,6 @@
 package com.devlab.prodcatalog.backend.controller.exceptions;
 
+import com.devlab.prodcatalog.backend.exceptions.DatabaseIntegrityException;
 import com.devlab.prodcatalog.backend.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,22 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+        return getStandardErrorResponseEntity(e, request, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DatabaseIntegrityException.class)
+    public ResponseEntity<StandardError> database(ResourceNotFoundException e, HttpServletRequest request) {
+        return getStandardErrorResponseEntity(e, request, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<StandardError> getStandardErrorResponseEntity(ResourceNotFoundException e, HttpServletRequest request, HttpStatus status) {
         StandardError err = new StandardError();
         err.setTimestamp(LocalDateTime.now());
-        err.setStatus(HttpStatus.NOT_FOUND.value());
+        err.setStatus(status.value());
         err.setMessage(e.getMessage());
         err.setError("Resource not found");
         err.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+        return ResponseEntity.status(status).body(err);
     }
 
 }

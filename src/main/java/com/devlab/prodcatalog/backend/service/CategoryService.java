@@ -2,11 +2,15 @@ package com.devlab.prodcatalog.backend.service;
 
 import com.devlab.prodcatalog.backend.dto.CategoryDto;
 import com.devlab.prodcatalog.backend.entities.Category;
+import com.devlab.prodcatalog.backend.exceptions.DatabaseIntegrityException;
 import com.devlab.prodcatalog.backend.exceptions.ResourceNotFoundException;
 import com.devlab.prodcatalog.backend.repositories.CategoryRepository;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,5 +40,30 @@ public class CategoryService {
     public CategoryDto insert(CategoryDto dto) {
         Category category = new Category(dto);
         return new CategoryDto(categoryRepository.save(category));
+    }
+
+    @Transactional
+    public CategoryDto update(Long id, CategoryDto dto) {
+        try {
+            Category category = categoryRepository.getById(id);
+            category.setName(dto.getName());
+            categoryRepository.save(category);
+            return new CategoryDto(category);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource id: %d not found".formatted(id));
+        }
+
+
+    }
+
+    public void delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Category id: %d not found".formatted(id));
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseIntegrityException("Database Error");
+        }
+
     }
 }
