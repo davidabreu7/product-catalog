@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/categories/v1")
 public class CategoryResource {
     private final CategoryService categoryService;
 

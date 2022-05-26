@@ -10,7 +10,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,15 +43,11 @@ public class CategoryService {
 
     @Transactional
     public CategoryDto update(Long id, CategoryDto dto) {
-        try {
-            Category category = categoryRepository.getById(id);
-            category.setName(dto.getName());
-            categoryRepository.save(category);
-            return new CategoryDto(category);
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Resource id: %d not found".formatted(id));
-        }
-
+        Category category = categoryRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Resource id: %d not found".formatted(id)));
+        category.setName(dto.getName());
+        categoryRepository.save(category);
+        return new CategoryDto(category);
 
     }
 
