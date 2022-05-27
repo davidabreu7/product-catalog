@@ -19,11 +19,11 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(DatabaseIntegrityException.class)
-    public ResponseEntity<StandardError> database(ResourceNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> database(DatabaseIntegrityException e, HttpServletRequest request) {
         return getStandardErrorResponseEntity(e, request, HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<StandardError> getStandardErrorResponseEntity(ResourceNotFoundException e, HttpServletRequest request, HttpStatus status) {
+    private ResponseEntity<StandardError> getStandardErrorResponseEntity(RuntimeException e, HttpServletRequest request, HttpStatus status) {
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
