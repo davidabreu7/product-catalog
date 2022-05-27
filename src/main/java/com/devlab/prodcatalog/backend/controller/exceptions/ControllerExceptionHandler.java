@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
 
     private ResponseEntity<StandardError> getStandardErrorResponseEntity(ResourceNotFoundException e, HttpServletRequest request, HttpStatus status) {
         StandardError err = new StandardError();
-        err.setTimestamp(LocalDateTime.now());
+        err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setMessage(e.getMessage());
         err.setError("Resource not found");

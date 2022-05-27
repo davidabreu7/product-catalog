@@ -1,20 +1,20 @@
 package com.devlab.prodcatalog.backend.controller.exceptions;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class StandardError {
 
-    private LocalDateTime timestamp;
+    private Instant timestamp;
     private Integer Status;
     private String error;
     private String message;
     private String path;
 
-    public LocalDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 
