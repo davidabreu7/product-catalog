@@ -3,8 +3,6 @@ package com.devlab.prodcatalog.backend.dto;
 import com.devlab.prodcatalog.backend.entities.Category;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
 public class CategoryDto {
 
@@ -38,19 +36,6 @@ public class CategoryDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CategoryDto that = (CategoryDto) o;
-        return Id.equals(that.Id) && name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(Id, name);
     }
 
     @Override

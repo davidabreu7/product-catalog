@@ -14,10 +14,10 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/categories")
-public class CategoryResource {
+public class CategoryController {
     private final CategoryService categoryService;
 
-    public CategoryResource(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 

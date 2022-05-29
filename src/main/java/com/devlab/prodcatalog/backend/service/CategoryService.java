@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -42,11 +43,14 @@ public class CategoryService {
 
     @Transactional
     public CategoryDto update(Long id, CategoryDto dto) {
-        Category category = categoryRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Resource id: %d not found".formatted(id)));
-        category.setName(dto.getName());
-        categoryRepository.save(category);
-        return new CategoryDto(category);
+        try {
+            Category category = categoryRepository.getById(id);
+            category.setName(dto.getName());
+            categoryRepository.save(category);
+            return new CategoryDto(category);
+        } catch (EmptyResultDataAccessException | EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource id: %d not found".formatted(id));
+        }
     }
 
     public void delete(Long id) {
