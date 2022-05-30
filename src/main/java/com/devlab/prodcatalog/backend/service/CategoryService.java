@@ -8,7 +8,7 @@ import com.devlab.prodcatalog.backend.repositories.CategoryRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CategoryDto> findAll(PageRequest pageRequest) {
+    public Page<CategoryDto> findAll(Pageable pageRequest) {
         return categoryRepository.findAll(pageRequest).map(CategoryDto::new);
     }
 

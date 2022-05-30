@@ -3,8 +3,7 @@ package com.devlab.prodcatalog.backend.controller;
 import com.devlab.prodcatalog.backend.dto.ProductDto;
 import com.devlab.prodcatalog.backend.service.ProductService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +19,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> findAll(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer linesPerPage,
-            @RequestParam(defaultValue = "ASC") String direction,
-            @RequestParam(defaultValue = "name") String orderBy
-    ) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return ResponseEntity.ok(productService.findAll(pageRequest));
+    public ResponseEntity<Page<ProductDto>> findAll(Pageable pageable)  {
+        return ResponseEntity.ok(productService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
