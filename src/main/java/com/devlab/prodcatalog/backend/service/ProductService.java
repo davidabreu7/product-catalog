@@ -32,7 +32,9 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDto findById(Long id) {
-        return productRepository.findById(id).map(x -> new ProductDto(x, x.getCategories())).orElseThrow(() -> new ResourceNotFoundException("Resource id: %d not found".formatted(id)));
+        return productRepository.findById(id)
+                .map(x -> new ProductDto(x, x.getCategories()))
+                .orElseThrow(() -> new ResourceNotFoundException("Resource id: %d not found".formatted(id)));
     }
 
     @Transactional
