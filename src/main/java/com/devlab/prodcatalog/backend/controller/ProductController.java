@@ -30,7 +30,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> insert(@RequestBody ProductDto productDto) {
-        return ResponseEntity.ok(productService.insert(productDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.insert(productDto));
     }
 
     @PutMapping("/{id}")
@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.status(HttpStatus.GONE).build();
     }
