@@ -4,12 +4,11 @@ import com.devlab.prodcatalog.backend.dto.CategoryDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -22,9 +21,11 @@ public class Category {
 
     @CreationTimestamp
     private Instant createdAt;
-
     @UpdateTimestamp
     private Instant updatedAt;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Product> products = new HashSet<>();
 
     public Instant getCreatedAt() {
         return createdAt;
@@ -40,7 +41,12 @@ public class Category {
     public Category(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
 
+    public Category(Long id, String name, Set<Product> products) {
+        this.id = id;
+        this.name = name;
+        this.products = products;
     }
 
     public Category(CategoryDto dto) {
@@ -73,6 +79,10 @@ public class Category {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @Override
