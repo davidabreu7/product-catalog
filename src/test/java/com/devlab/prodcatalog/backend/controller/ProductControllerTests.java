@@ -1,9 +1,9 @@
 package com.devlab.prodcatalog.backend.controller;
 
-import com.devlab.prodcatalog.backend.ProductFactory;
 import com.devlab.prodcatalog.backend.dto.ProductDto;
 import com.devlab.prodcatalog.backend.exceptions.ResourceNotFoundException;
 import com.devlab.prodcatalog.backend.service.ProductService;
+import com.devlab.prodcatalog.backend.util.ProductFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

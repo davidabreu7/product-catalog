@@ -1,4 +1,4 @@
-package com.devlab.prodcatalog.backend;
+package com.devlab.prodcatalog.backend.util;
 
 import com.devlab.prodcatalog.backend.dto.ProductDto;
 import com.devlab.prodcatalog.backend.entities.Category;

@@ -1,14 +1,18 @@
 package com.devlab.prodcatalog.backend.entities;
 
+import com.devlab.prodcatalog.backend.dto.UserDto;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "tb_user")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
@@ -24,13 +28,11 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, Set<Role> roles) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     public User(String firstName, String lastName, String email, String password, Set<Role> roles) {
@@ -40,6 +42,27 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
+
+    public User(Long id, String firstName, String lastName, String email, String password, Set<Role> roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(UserDto dto) {
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        this.email = dto.getEmail();
+        this.password = dto.getLastName();
+        dto.getRoles()
+                .stream()
+                .map(Role::new)
+                .forEach(x -> roles.add(x));
+    }
+
 
     public Long getId() {
         return id;
@@ -94,7 +117,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id) && email.equals(user.email);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
     }
 
     @Override

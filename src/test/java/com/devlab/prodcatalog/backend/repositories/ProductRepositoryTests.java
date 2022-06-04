@@ -19,7 +19,7 @@ public class ProductRepositoryTests {
 
 
     @BeforeEach
-    public void beforeEach() throws Exception {
+    public void beforeEach()  {
         validId = 1L;
         invalidId = 1000L;
     }
