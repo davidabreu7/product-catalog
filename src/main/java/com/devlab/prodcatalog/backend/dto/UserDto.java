@@ -2,14 +2,20 @@ package com.devlab.prodcatalog.backend.dto;
 
 import com.devlab.prodcatalog.backend.entities.User;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto {
 
     private Long id;
+    @Size(min = 5, max = 50, message = "Nome deve ter entre 5 e 50 caracteres")
+    @NotBlank(message = "Campo Obrigatório")
     private String firstName;
     private String lastName;
+    @Email(message = "Email inválido")
     private String email;
     private List<RoleDto> roles = new ArrayList<>();
 
