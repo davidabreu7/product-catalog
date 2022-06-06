@@ -1,3 +1,10 @@
+create table if not exists category(id bigint auto_increment primary key, created_at datetime null, name varchar(255) null, updated_at datetime null);
+create table if not exists product (id bigint auto_increment primary key, created_at  datetime null, description text null, img_url varchar(255) null,name varchar(255) null, price double null, updated_at  datetime null);
+create table if not exists product_category (product_id  bigint not null, category_id bigint not null, primary key (product_id, category_id), constraint FK2k3smhbruedlcrvu6clued06x foreign key (product_id) references product (id), constraint FKkud35ls1d40wpjb5htpp14q4e foreign key (category_id) references category (id));
+create table if not exists tb_role (id bigint auto_increment primary key, authority varchar(255) null);
+create table if not exists tb_user (id bigint auto_increment primary key, email      varchar(255) null, first_name varchar(255) null, last_name  varchar(255) null, password   varchar(255) null);
+create table if not exists user_role (user_id bigint not null, role_id bigint not null, primary key (user_id, role_id), constraint FK430om9qnxgilp5cvcbeyovi37 foreign key (user_id) references tb_user (id), constraint FKeayxeqvq6j9yuf6ogfgvr9u6 foreign key (role_id) references tb_role (id));
+
 INSERT INTO tb_user (first_name, last_name, email, password) VALUES ('Alex', 'Brown', 'alex@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG');
 INSERT INTO tb_user (first_name, last_name, email, password) VALUES ('Maria', 'Green', 'maria@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG');
 

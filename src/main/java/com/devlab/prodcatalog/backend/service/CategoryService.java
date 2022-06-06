@@ -32,7 +32,9 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDto findById(Long Id) {
         Optional<Category> category = categoryRepository.findById(Id);
-        return category.map(CategoryDto::new).orElseThrow(() -> new ResourceNotFoundException(String.format("Resource Id %d not found", Id)));
+        return category
+                .map(CategoryDto::new)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Resource Id %d not found", Id)));
     }
 
     @Transactional
@@ -61,6 +63,5 @@ public class CategoryService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseIntegrityException("Database Error");
         }
-
     }
 }

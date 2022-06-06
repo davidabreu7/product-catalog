@@ -50,7 +50,18 @@ public class ProductService {
         DtoToEntity(productDto, product);
         return new ProductDto(productRepository.save(product), product.getCategories());
     }
-
+    @Transactional
+    public void delete(Long id) {
+        try {
+            productRepository.deleteById(id);
+        } catch (
+                EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Category id: %d not found".formatted(id));
+        } catch (
+                DataIntegrityViolationException e) {
+            throw new DatabaseIntegrityException("Database Error");
+        }
+    }
 
     private void DtoToEntity(ProductDto productDto, Product product) {
         product.setName(productDto.getName());
@@ -64,16 +75,5 @@ public class ProductService {
         });
     }
 
-    @Transactional
-    public void delete(Long id) {
-        try {
-            productRepository.deleteById(id);
-        } catch (
-                EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Category id: %d not found".formatted(id));
-        } catch (
-                DataIntegrityViolationException e) {
-            throw new DatabaseIntegrityException("Database Error");
-        }
-    }
+
 }

@@ -25,7 +25,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void findAllShouldReturnOptionalWhenIdExists(){
+    public void findByIdShouldReturnOptionalWhenIdExists(){
         Optional<Product> productOptional = productRepository.findById(validId);
         Assertions.assertNotNull(productOptional);
     }

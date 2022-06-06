@@ -56,11 +56,11 @@ public class User {
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         this.email = dto.getEmail();
-        this.password = dto.getLastName();
-        dto.getRoles()
-                .stream()
-                .map(Role::new)
-                .forEach(x -> roles.add(x));
+    }
+
+    public User(UserDto dto, Set<Role> roles) {
+        this(dto);
+        this.roles.addAll(roles);
     }
 
 
