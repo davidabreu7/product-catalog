@@ -2,6 +2,7 @@ package com.devlab.prodcatalog.backend.dto;
 
 import com.devlab.prodcatalog.backend.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto {
@@ -10,7 +11,7 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
-    private List<RoleDto> roles;
+    private List<RoleDto> roles = new ArrayList<>();
 
     public UserDto() {
     }

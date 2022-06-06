@@ -1,6 +1,7 @@
 package com.devlab.prodcatalog.backend.entities;
 
 import com.devlab.prodcatalog.backend.dto.UserDto;
+import com.devlab.prodcatalog.backend.dto.UserInsertDto;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,20 +20,13 @@ public class User {
     private String email;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     public User() {
-    }
-
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
     }
 
     public User(String firstName, String lastName, String email, String password, Set<Role> roles) {
@@ -53,6 +47,12 @@ public class User {
     }
 
     public User(UserDto dto) {
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        this.email = dto.getEmail();
+    }
+
+    public User(UserInsertDto dto) {
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         this.email = dto.getEmail();

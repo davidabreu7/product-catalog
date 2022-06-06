@@ -1,8 +1,8 @@
 package com.devlab.prodcatalog.backend.controller;
 
 import com.devlab.prodcatalog.backend.dto.UserDto;
+import com.devlab.prodcatalog.backend.dto.UserInsertDto;
 import com.devlab.prodcatalog.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
+    final
     UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll(){
@@ -33,8 +37,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> insert(@RequestBody UserDto userDto){
-        userDto = userService.insert(userDto);
+    public ResponseEntity<UserDto> insert(@RequestBody UserInsertDto userInsertDto){
+        UserDto userDto = userService.insert(userInsertDto);
         URI uri = ServletUriComponentsBuilder.
                 fromCurrentRequest().
                 path("/{id}").

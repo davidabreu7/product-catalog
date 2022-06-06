@@ -36,6 +36,8 @@ public class Role {
         authority = roleDto.getAuthority();
     }
 
+
+
     public Long getId() {
         return id;
     }
