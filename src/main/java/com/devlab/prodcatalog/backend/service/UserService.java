@@ -2,6 +2,7 @@ package com.devlab.prodcatalog.backend.service;
 
 import com.devlab.prodcatalog.backend.dto.UserDto;
 import com.devlab.prodcatalog.backend.dto.UserInsertDto;
+import com.devlab.prodcatalog.backend.dto.UserUpdateDto;
 import com.devlab.prodcatalog.backend.entities.Role;
 import com.devlab.prodcatalog.backend.entities.User;
 import com.devlab.prodcatalog.backend.exceptions.DatabaseIntegrityException;
@@ -65,7 +66,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateById(Long id, UserDto dto) {
+    public UserDto updateById(Long id, UserUpdateDto dto) {
         User user = dtoToUser(id, dto);
         return new UserDto(userRepository.save(user));
     }

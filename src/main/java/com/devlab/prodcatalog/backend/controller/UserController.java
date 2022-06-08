@@ -2,6 +2,7 @@ package com.devlab.prodcatalog.backend.controller;
 
 import com.devlab.prodcatalog.backend.dto.UserDto;
 import com.devlab.prodcatalog.backend.dto.UserInsertDto;
+import com.devlab.prodcatalog.backend.dto.UserUpdateDto;
 import com.devlab.prodcatalog.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateById(@PathVariable Long id, @Valid @RequestBody UserDto dto){
+    public ResponseEntity<UserDto> updateById(@PathVariable Long id, @Valid @RequestBody UserUpdateDto dto){
         return ResponseEntity.ok(userService.updateById(id, dto));
     }
 
