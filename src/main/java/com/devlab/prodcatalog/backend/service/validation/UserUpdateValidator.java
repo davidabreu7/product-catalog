@@ -32,21 +32,19 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 
         @SuppressWarnings("unchecked")
         var pathVars = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-
-
+        Long userId = Long.valueOf(pathVars.get("id"));
 
         List<FieldError> list = new ArrayList<>();
 
         User user = userRepository.findByEmail(dto.getEmail());
 
-        if (user != null) {
+        if (user != null && !userId.equals(user.getId())) {
             list.add(new FieldError("email", "Email ja existe"));
         }
 
         for (FieldError e : list) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(e.getError()).addPropertyNode(e.getField())
-                    .addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(e.getError()).addPropertyNode(e.getField()).addConstraintViolation();
         }
         return list.isEmpty();
     }
