@@ -11,6 +11,8 @@ import com.devlab.prodcatalog.backend.repositories.RoleRepository;
 import com.devlab.prodcatalog.backend.repositories.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     final UserRepository userRepository;
     final RoleRepository roleRepository;
@@ -90,5 +92,11 @@ public class UserService {
                         .orElseThrow(() ->
                                 new ResourceNotFoundException("Role id: %d not found".formatted(roleDto.getId()))))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário nâo encontrado"));
     }
 }

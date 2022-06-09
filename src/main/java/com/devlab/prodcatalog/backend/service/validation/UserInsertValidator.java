@@ -2,7 +2,6 @@ package com.devlab.prodcatalog.backend.service.validation;
 
 import com.devlab.prodcatalog.backend.controller.exceptions.FieldError;
 import com.devlab.prodcatalog.backend.dto.UserInsertDto;
-import com.devlab.prodcatalog.backend.entities.User;
 import com.devlab.prodcatalog.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,11 +25,8 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 
         List<FieldError> list = new ArrayList<>();
 
-        User user = userRepository.findByEmail(dto.getEmail());
-
-        if (user != null){
-            list.add(new FieldError("email", "Email ja existe"));
-        }
+        userRepository.findByEmail(dto.getEmail())
+                .ifPresent(user -> list.add(new FieldError("email", "Email ja existe")));
 
         for (FieldError e : list) {
             context.disableDefaultConstraintViolation();
