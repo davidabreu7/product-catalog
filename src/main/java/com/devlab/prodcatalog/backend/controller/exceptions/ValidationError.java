@@ -11,7 +11,4 @@ public class ValidationError extends StandardError{
         return fieldErrors;
     }
 
-    public void setFieldErrors(List<FieldError> fieldErrors) {
-        this.fieldErrors = fieldErrors;
-    }
 }
