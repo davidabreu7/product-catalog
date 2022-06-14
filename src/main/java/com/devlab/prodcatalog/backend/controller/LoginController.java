@@ -12,6 +12,7 @@ public class LoginController {
 
     final AuthenticationManager authenticationManager;
 
+
     public LoginController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
