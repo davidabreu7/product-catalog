@@ -1,7 +1,6 @@
 package com.devlab.prodcatalog.backend.entities;
 
 import com.devlab.prodcatalog.backend.dto.RoleDto;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,14 +9,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_role")
-public class Role implements GrantedAuthority {
+public class Role  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String authority;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private final Set<User> users = new HashSet<>();
 
     public Role() {
@@ -45,7 +44,6 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    @Override
     public String getAuthority() {
         return authority;
     }

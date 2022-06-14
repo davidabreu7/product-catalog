@@ -1,8 +1,8 @@
 package com.devlab.prodcatalog.backend.entities;
 
 import com.devlab.prodcatalog.backend.dto.UserDto;
-import com.devlab.prodcatalog.backend.dto.UserInsertDto;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -20,7 +20,7 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
-    private String email;
+    protected String email;
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -29,19 +29,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ElementCollection
+    private final Set<GrantedAuthority> authorities = new HashSet<>();
+
     public User() {
     }
 
     public User(String firstName, String lastName, String email, String password, Set<Role> roles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
 
-    public User(Long id, String firstName, String lastName, String email, String password, Set<Role> roles) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -55,17 +50,16 @@ public class User implements UserDetails {
         this.email = dto.getEmail();
     }
 
-    public User(UserInsertDto dto) {
-        this.firstName = dto.getFirstName();
-        this.lastName = dto.getLastName();
-        this.email = dto.getEmail();
-    }
-
     public User(UserDto dto, Set<Role> roles) {
         this(dto);
         this.roles.addAll(roles);
     }
 
+    public void initializeAuthorities() {
+        roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                .forEach(authorities::add);
+    }
 
     public Long getId() {
         return id;
@@ -112,10 +106,6 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,10 +130,9 @@ public class User implements UserDetails {
                 ", roles=" + roles +
                 '}';
     }
-
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+    public Collection<GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
@@ -170,4 +159,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+    // implement the rest of UserDetails interface accordingly
 }
+
+

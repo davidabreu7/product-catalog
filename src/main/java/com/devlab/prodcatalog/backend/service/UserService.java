@@ -94,9 +94,15 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toSet());
     }
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByEmail(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário nâo encontrado"));
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        user.initializeAuthorities();
+
+        return user;
     }
-}
+    }
+
+
