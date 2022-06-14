@@ -20,10 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
+    private final JwtConfig jwtConfig;
 
-    public WebSecurityConfig(BCryptPasswordEncoder passwordEncoder, UserDetailsService userDetails) {
+    public WebSecurityConfig(BCryptPasswordEncoder passwordEncoder, UserDetailsService userDetails, JwtConfig jwtConfig) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetails;
+        this.jwtConfig = jwtConfig;
     }
 
     @Override
@@ -44,10 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUserPasswordAuthenticationFilter(authenticationManagerBean()))
-                .addFilterAfter(new JwtTokenVerifierFilter(), JwtUserPasswordAuthenticationFilter.class)
+                .addFilter(new JwtUserPasswordAuthenticationFilter(authenticationManagerBean(), jwtConfig))
+                .addFilterAfter(new JwtTokenVerifierFilter(jwtConfig), JwtUserPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/login").permitAll()

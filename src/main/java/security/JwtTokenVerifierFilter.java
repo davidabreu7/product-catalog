@@ -1,5 +1,6 @@
 package security;
 
+import com.devlab.prodcatalog.backend.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -16,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,20 +24,27 @@ import java.util.stream.Collectors;
 
 public class JwtTokenVerifierFilter extends OncePerRequestFilter {
 
+
+    private final JwtConfig jwtConfig;
+
+    public JwtTokenVerifierFilter(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")){
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
         try {
             String token = authorizationHeader.replace("Bearer ", "");
 
-            String key = "ddb174a0-e551-40a1-89fa-95930f866242";
+
             Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(key.getBytes(StandardCharsets.UTF_8))
+                    .setSigningKey(jwtConfig.getSecretKeyForSigning())
                     .build()
                     .parseClaimsJws(token);
 
