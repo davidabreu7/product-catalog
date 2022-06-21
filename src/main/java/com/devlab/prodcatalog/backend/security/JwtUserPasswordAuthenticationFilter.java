@@ -1,15 +1,15 @@
-package security;
+package com.devlab.prodcatalog.backend.security;
 
 import com.devlab.prodcatalog.backend.config.JwtConfig;
 import com.devlab.prodcatalog.backend.dto.UserAuthenticationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
@@ -19,15 +19,15 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Service
+
+
 public class JwtUserPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-
+    @Autowired
+    AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
-    private final AuthenticationManager authenticationManager;
 
-    public JwtUserPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig) {
-        this.authenticationManager = authenticationManager;
+    public JwtUserPasswordAuthenticationFilter(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
     }
 

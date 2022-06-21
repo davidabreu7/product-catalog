@@ -1,4 +1,4 @@
-package security;
+package com.devlab.prodcatalog.backend.security;
 
 import com.devlab.prodcatalog.backend.config.JwtConfig;
 import io.jsonwebtoken.Claims;

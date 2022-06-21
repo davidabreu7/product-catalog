@@ -1,5 +1,7 @@
 package com.devlab.prodcatalog.backend.config;
 
+import com.devlab.prodcatalog.backend.security.JwtTokenVerifierFilter;
+import com.devlab.prodcatalog.backend.security.JwtUserPasswordAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,8 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import security.JwtTokenVerifierFilter;
-import security.JwtUserPasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public JwtUserPasswordAuthenticationFilter JwtUserPasswordAuthenticationFilter() throws Exception {
+        var filter = new JwtUserPasswordAuthenticationFilter(jwtConfig);
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -48,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUserPasswordAuthenticationFilter(authenticationManagerBean(), jwtConfig))
+                .addFilter(JwtUserPasswordAuthenticationFilter())
                 .addFilterAfter(new JwtTokenVerifierFilter(jwtConfig), JwtUserPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
