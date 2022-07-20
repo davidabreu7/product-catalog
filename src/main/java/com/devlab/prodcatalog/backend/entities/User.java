@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_user")
@@ -53,12 +54,6 @@ public class User implements UserDetails {
     public User(UserDto dto, Set<Role> roles) {
         this(dto);
         this.roles.addAll(roles);
-    }
-
-    public void initializeAuthorities() {
-        roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                .forEach(authorities::add);
     }
 
     public Long getId() {
@@ -132,7 +127,9 @@ public class User implements UserDetails {
     }
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return authorities;
+        return getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -159,7 +156,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    // implement the rest of UserDetails interface accordingly
+
 }
 
 

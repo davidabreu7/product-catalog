@@ -97,12 +97,9 @@ public class UserService implements UserDetailsService {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByEmail(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-        user.initializeAuthorities();
-
-        return user;
     }
-    }
+}
 
 
