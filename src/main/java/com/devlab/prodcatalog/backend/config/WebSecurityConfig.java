@@ -61,12 +61,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerifierFilter(jwtConfig), JwtUserPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/users")
                 .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated();
-
-    }
+        }
 
 }
