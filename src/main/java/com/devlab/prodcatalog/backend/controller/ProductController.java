@@ -2,7 +2,7 @@ package com.devlab.prodcatalog.backend.controller;
 
 import com.devlab.prodcatalog.backend.dto.ProductDto;
 import com.devlab.prodcatalog.backend.service.ProductService;
-import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class ProductController {
 
     @GetMapping
     @Cacheable(value = "allProducts")
-    public ResponseEntity<Page<ProductDto>> findAll(@Parameter(hidden = true) @PageableDefault(value = 10) Pageable pageable) {
+    public ResponseEntity<Page<ProductDto>> findAll(@ParameterObject @PageableDefault(value = 10) Pageable pageable) {
         return ResponseEntity.ok(productService.findAll(pageable));
     }
 
